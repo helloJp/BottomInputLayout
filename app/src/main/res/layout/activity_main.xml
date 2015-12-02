@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rootView"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:focusableInTouchMode="true"
+    tools:context="me.jp.bottominputlayout.MainActivity"
+    >
+
+    <me.jp.bottominputlayout.view.BottomInputLayout
+        android:id="@+id/input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:lineSpacingMultiplier="1.3"
+                android:text="@string/test_string"
+                />
+        </ScrollView>
+
+    </me.jp.bottominputlayout.view.BottomInputLayout>
+
+</RelativeLayout>

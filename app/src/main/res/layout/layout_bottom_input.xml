@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+
+    <FrameLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e2e6e9"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:id="@+id/add_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@mipmap/add_pic"
+
+                />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                >
+
+                <EditText
+                    android:id="@+id/et_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="说点什么..."
+                    android:maxLines="3"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="15dp"
+                    android:text="地图甚有利于谷歌对日益图甚有利于谷歌对日益图甚有利于谷歌对日益图甚有利于谷歌对日益"
+                    android:textColor="#444444"
+                    android:textColorHint="#a8a8a8"
+                    android:textSize="15sp"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:background="#fdaaa4"
+                    />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_action"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:gravity="center"
+                android:text="发表"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
+    </FrameLayout>
+
+</RelativeLayout>
+
