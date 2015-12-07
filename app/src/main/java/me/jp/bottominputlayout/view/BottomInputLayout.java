@@ -37,7 +37,6 @@ public class BottomInputLayout extends RelativeLayout implements View.OnClickLis
     private EditText mEtInput;
     private TextView mTvAction;
 
-
     private String mPicPath;
 
     public BottomInputLayout(Context context) {
@@ -69,15 +68,16 @@ public class BottomInputLayout extends RelativeLayout implements View.OnClickLis
     private void initEvent() {
         mKeyboardHelper = new SoftKeyboardStateHelper(((Activity) getContext())
                 .getWindow().getDecorView());
-        mKeyboardHelper.addSoftKeyboardStateListener(new SoftKeyboardStateListener());
+        mKeyboardHelper.addSoftKeyboardStateListener(new SoftKeyboardStateCallback());
 
         //mask
         mViewMask.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO hide softKeyboard
-                Toast.makeText(getContext(), "maskClick", Toast.LENGTH_SHORT).show();
                 mViewMask.setVisibility(View.GONE);
+                if (null != mOnClickCallback) {
+                    mOnClickCallback.onMaskClick(v);
+                }
             }
         });
 
@@ -117,6 +117,7 @@ public class BottomInputLayout extends RelativeLayout implements View.OnClickLis
         maskParams.addRule(RelativeLayout.ABOVE, ID_BOTTOM_VIEW);
         mViewMask.setBackgroundColor(MASK_COLOR);
         mViewMask.setClickable(true);
+        mViewMask.setVisibility(View.GONE);
         this.addView(mViewMask, maskParams);
 
         //图片容器布局（图片、删除按钮）
@@ -148,9 +149,15 @@ public class BottomInputLayout extends RelativeLayout implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_pic:
+                if (null != mOnClickCallback) {
+                    mOnClickCallback.onShowBigImg(v);
+                }
                 showToast("iv_pic");
                 break;
             case R.id.add_pic:
+                if (null != mOnClickCallback) {
+                    mOnClickCallback.onAddPic(v);
+                }
                 addPic();
                 break;
             case R.id.delete_pic:
@@ -158,8 +165,8 @@ public class BottomInputLayout extends RelativeLayout implements View.OnClickLis
                 showToast("delete_pic");
                 break;
             case R.id.tv_action:
-                if (null != mOnActionClickListener) {
-                    mOnActionClickListener.onClick(v);
+                if (null != mOnClickCallback) {
+                    mOnClickCallback.onAction(v);
                 }
                 break;
         }
@@ -177,7 +184,7 @@ public class BottomInputLayout extends RelativeLayout implements View.OnClickLis
         mLayoutPic.setVisibility(View.VISIBLE);
     }
 
-    private class SoftKeyboardStateListener implements SoftKeyboardStateHelper.SoftKeyboardStateListener {
+    private class SoftKeyboardStateCallback implements SoftKeyboardStateHelper.SoftKeyboardStateListener {
         @Override
         public void onSoftKeyboardOpened(int keyboardHeightInPx) {
             setKeyBoardOpenStatus();
@@ -202,11 +209,20 @@ public class BottomInputLayout extends RelativeLayout implements View.OnClickLis
         return mPicPath;
     }
 
+    private OnClickCallback mOnClickCallback;
 
-    public OnClickListener mOnActionClickListener;
+    public void setOnClickCallback(OnClickCallback callback) {
+        mOnClickCallback = callback;
+    }
 
-    public void setOnActionListener(OnClickListener listener) {
-        mOnActionClickListener = listener;
+    public interface OnClickCallback {
+        void onShowBigImg(View view);
+
+        void onAddPic(View view);
+
+        void onAction(View view);
+
+        void onMaskClick(View view);
     }
 
     //------------auto hide keyboard start------------------------
@@ -237,6 +253,7 @@ public class BottomInputLayout extends RelativeLayout implements View.OnClickLis
         // 如果焦点不是EditText则忽略，这个发生在视图刚绘制完，第一个焦点不在EditView上，和用户用轨迹球选择其他的焦点
         return false;
     }
+    //------------auto hide keyboard end------------------------
 
     private void hideSoftInput(IBinder token) {
         if (token != null) {
@@ -245,7 +262,15 @@ public class BottomInputLayout extends RelativeLayout implements View.OnClickLis
             im.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-    //------------auto hide keyboard end------------------------
+
+
+    public void showSoftInput() {
+        this.getInputView().requestFocus();
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(this.getInputView(), InputMethodManager.SHOW_IMPLICIT);
+    }
+
 
     private int dip2px(int dpValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, getResources().getDisplayMetrics());
