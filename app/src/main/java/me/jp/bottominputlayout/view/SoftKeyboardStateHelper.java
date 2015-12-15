@@ -36,19 +36,14 @@ public class SoftKeyboardStateHelper implements ViewTreeObserver.OnGlobalLayoutL
     }
 
     private final int HEIGHT_OFF = 299;
-
     @Override
     public void onGlobalLayout() {
         final Rect r = new Rect();
-        // r will be populated with the coordinates of your view that area still visible.
         mActivityRootView.getWindowVisibleDisplayFrame(r);
 
         final int heightDiff = mActivityRootView.getRootView().getHeight()
                 - (r.bottom - r.top);
-//        debug("heightDiff >>>" + heightDiff);
-
-        if (!mIsSoftKeyboardOpened && heightDiff > HEIGHT_OFF) { // if more than 100
-            // pixels, its probably a keyboard...
+        if (!mIsSoftKeyboardOpened && heightDiff > HEIGHT_OFF) {
             mIsSoftKeyboardOpened = true;
             notifyOnSoftKeyboardOpened(heightDiff);
         } else if (mIsSoftKeyboardOpened && heightDiff < HEIGHT_OFF) {
@@ -78,8 +73,7 @@ public class SoftKeyboardStateHelper implements ViewTreeObserver.OnGlobalLayoutL
         mListeners.add(listener);
     }
 
-    public void removeSoftKeyboardStateListener(
-            SoftKeyboardStateListener listener) {
+    public void removeSoftKeyboardStateListener(SoftKeyboardStateListener listener) {
         mListeners.remove(listener);
     }
 
