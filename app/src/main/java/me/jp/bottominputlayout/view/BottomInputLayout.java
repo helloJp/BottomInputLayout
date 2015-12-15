@@ -243,7 +243,7 @@ public class BottomInputLayout extends RelativeLayout implements View.OnClickLis
             v.getLocationInWindow(location);
             int top = location[1];
             int bottom = top + v.getMeasuredHeight() + dip2px(10);
-            if (event.getY() > top && event.getY() < bottom) {
+            if (event.getRawY() > top && event.getRawY() < bottom) {
                 // 点击EditText的事件，忽略它。
                 return false;
             } else {
@@ -266,9 +266,8 @@ public class BottomInputLayout extends RelativeLayout implements View.OnClickLis
 
     public void showSoftInput() {
         this.getInputView().requestFocus();
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(this.getInputView(), InputMethodManager.SHOW_IMPLICIT);
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 
